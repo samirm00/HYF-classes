@@ -1,42 +1,101 @@
-> ...
+# HYF classes 
 
-## Getting Started
 
-This repository comes with some nice extras like testing, documentation and CI, but in it's heart it's just an HTML/CSS/JS website boilerplate.
+> A simple website allows the user to create and delete classes and add and delete students to each class
 
-### Development
+## Table of contents
+* [General info](#general-info)
+* [Screenshots](#screenshots)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Features](#features)
+* [Status](#status)
+* [Inspiration](#inspiration)
+* [Contact](#contact)
 
-To run this project locally you will need to open `index.html` in your browser using a local server. _LiveServer_, `http-server`, `study-lenses`, or any other local static server will work.
+## General info
+A simple website allows the user to create and delete classes and add and delete students to each class, the objective is using classes to create many instances.
 
-### Deployment
+## Screenshots
+![Example screenshot](public/assests/screenShot.png)
 
-Push your changes, turn on GitHub pages, that's all!
+## Technologies
+* JavaScript
+* HTML
+* CSS
+* VSC code
 
-When your project is deployed to GitHub pages there will be buttons rendered at the top of your page to validate your HTML, CSS, accessibility and spelling, plus a link back to the project repository.
 
-### Installing Dependencies
+## Setup
+open the website and create as many `todo list as you want`
 
-There are no dependencies needed to run the website, everything is prepared to work with vanilla JavaScript. However, if you want to run tests or if you want to generate documentation for your project you will need to install the development dependencies:
+## Code Examples
 
-- `npm install`
+```js
+'use strict';
 
-### Documentation
+import { logger } from '../../lib/logger.js';
 
-To document your project you will need to write a JSDoc comment for each function in the `/handlers` and `/app/todos.js`. You will also want to add an entry to the JSDoc in `/data.js` for each property you store in the object.
+import { List } from '../classes/list.js';
 
-The JSDoc comments you write in the `/src` folder will be used to re-write the `DOCS.md` file each time you run `npm run document` from the root of your project.
 
-### Testing
+/*
+  a handler function that adds new lists in the list manager
+  it reads in the user's title and creates a new list using the list prototype
+  then renders the new list and appends it to the UI.
+  users can now add and remove items from the new list
+*/
 
-After installing the dev dependencies you can start writing and running tests for your .js files. Careful! In this project starter you can only test code that does not interact with the DOM, so only the `src/app/todos.js` functions will be testable (`view` methods will be tested in Node.js using `jsdom`). There are two options for running tests:
+export const createListHandler = (event) => {
+  
 
-- _Individually_: You can run the tests in a single `.spec.js` using the VSCode debugger. Open the spec file you want to run, open the debugger pane, select the "current .spec.js file" option, then start debugging!
-- _All at Once_: You can also run every `.spec.js` in the `/src` directory at the same time using `npm run test`. When you run the `npm run test` command all test results will be logged to the console, and a report file will be generated next to each spec file. These report files will be helpful when reviewing PRs to the `main`/`master` branch.
+  if(event.keyCode !== 13){
+    return;
+  }
 
-### Continuous Integration
+  if (event.target.value ===  ''){
+    alert(' Please type a class name and press enter');
+    return;
+  }
 
-This repository comes with a GitHub Action to re-build the documentation and run all the tests whenever you push to `master`/`main`, and each time you open a PR to `master`/`main`. You don't need to do anything, it works!
+  const newClass = new List({header: event.target.value , todos: []}) ;
 
-Having this CI action means that your master branch will always have the most up-to-date documentation, and that you can easily check test results when reviewing Pull Requests.
+  const renderNewClass = newClass.render();
 
-> ...
+  document.getElementById('lists').appendChild(renderNewClass);
+  event.target.value = '';
+
+  logger.push({
+    action: 'add a new class',
+    event,
+    newClass,
+    renderNewClass,
+
+  });
+  
+
+};
+```
+
+
+## Features
+List of features ready and Todos for future development
+
+* 
+* 
+* 
+
+To-do list:
+
+* 
+* 
+
+## Status
+Project is: _in progress_
+
+## Inspiration
+
+from `Watch and Code`
+
+## Contact
+By [@Group2] 
