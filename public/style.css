@@ -1,3 +1,7 @@
+body{
+    background-color: rgb(70, 92, 114);
+}
+
 #user-interface{
     text-align: center
     }
@@ -46,7 +50,7 @@
     }
     
     .first-input{
-        background-color: rgb(207, 209, 59);
+        background-color: rgb(197, 197, 186);
         border:none;
         margin-bottom: 10px;
     }
