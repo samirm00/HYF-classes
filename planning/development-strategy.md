@@ -12,7 +12,7 @@ A simple website allow the user to create many classes and delete them, and add 
 > - what types?
 > - what are array entries like?
 
- state (date) are an object with two entries , {header(title) , classes[ ] }
+ state (data) are an object with two entries , {header(title) , classes[ ] }
 
 ---
 
