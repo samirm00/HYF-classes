@@ -1,68 +1,166 @@
 'use strict';
 
-/*
-  The code in here is just an example to show you can use Classes in this starter
-  go ahead and delete it all to get started on your own project!
-*/
 
-export class List {
-  _state = {
-    title: '',
-    entries: [],
+export class List  {
+
+  state = {
+    header: '',
+    todos:[],
   };
 
-  constructor(title, entries) {
-    this.title = title;
-    this.entries = entries;
+  constructor({header,todos}){
+    this.state.header = header ;
+    this.state.todos = todos ;
   }
 
-  // getters & setters
-  get title() {
-    return this._state.title;
-  }
-  set title(newTitle) {
-    if (typeof newTitle !== 'string') {
-      throw new TypeError('newTitle is not a string');
-    }
-    this._state.title = newTitle;
-  }
-  get entries() {
-    return [...this._state.entries];
-  }
-  set entries(newEntries) {
-    if (!Array.isArray(newEntries)) {
-      throw new TypeError('newEntries is not an array');
-    }
-    if (newEntries.some((entry) => !entry || typeof entry !== 'object')) {
-      throw new TypeError('some entries are not objects');
-    }
-    this._state.entries = [...newEntries];
+  render(){
+
+    // create parent div 
+    const divEl = document.createElement('div');
+    divEl.classList.add('list-div');
+    divEl.id = 'list-div';
+
+    // delete button
+    const buttonEl = document.createElement('button');
+    buttonEl.id = 'delete';
+    buttonEl.innerHTML ='<i class="fas fa-trash"></i>'
+    buttonEl.classList.add('delete-btn');     
+    buttonEl.addEventListener('click', function(){      
+      this.parentElement.remove();
+    })
+
+    // select all button
+
+    const buttonSelectAll = document.createElement('button');
+    buttonSelectAll.innerHTML = '<i class="fas fa-check-double"></i>';
+    buttonSelectAll.classList.add('select-all');
+
+    buttonSelectAll.addEventListener('click', this.toggleAll.bind(this));
+
+    // header element 
+    const h2El = document.createElement('h2');
+    h2El.innerText = this.state.header ;
+    h2El.className = 'header2'
+
+    // button add a list 
+
+    const buttonList = document.createElement('button');
+    buttonList.innerHTML = '<i class="fas fa-plus"></i>';
+    buttonList.id = 'add';
+    buttonList.addEventListener('click',this.addTodos.bind(this));
+
+    // create input to lists 
+    const inputList = document.createElement('input');
+    inputList.type ='text';
+    inputList.placeholder = 'Add a new student and click on + '
+    inputList.size = '27';
+    inputList.className ='first-input';
+    inputList.id = `${this.state.header}input`;
+
+    // ul for list items 
+    const ulEl = document.createElement('ul');
+    ulEl.className = 'second-ul'
+    ulEl.id = `${this.state.header}ul`;
+
+    // append buttons , header, input and ul
+
+    divEl.appendChild(buttonEl);
+    divEl.appendChild(buttonSelectAll);
+    divEl.appendChild(h2El);
+    divEl.appendChild(buttonList);
+    divEl.appendChild(inputList);
+    divEl.appendChild(ulEl);
+
+    return divEl;
   }
 
-  // logic methods
-  toggleCompleted(position) {
-    if (position < 0 || this.entries.length <= position) {
+  displayTodos(){
+
+    let todosUl = document.getElementById(`${this.state.header}ul`);
+    todosUl.innerHTML = '';
+    this.state.todos.forEach( function(todo, position){
+      const todoLi = document.createElement('li');
+      const todoText = document.createTextNode(todo.text);
+      todoLi.id = position ;
+      todoLi.appendChild(todoText);
+
+      const inputItem = document.createElement('input');
+      inputItem.type = 'checkbox';
+      inputItem.className ='checkbox';      
+      todoLi.insertBefore(inputItem, todoText);
+
+      inputItem.addEventListener('click', this.toggle.bind(this , position));
+
+      if(this.state.todos[position].completed){
+        todoLi.className = 'checkbox';
+        inputItem.checked = true ;
+      } else {
+        todoLi.classList.remove('checkbox');
+        inputItem.checked = false ;
+      }
+
+      const buttonDelete =document.createElement('button');
+      buttonDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      buttonDelete.className ='delete-btn';
+
+      todoLi.appendChild(buttonDelete);
+
+      buttonDelete.addEventListener('click', this.deleteTodos.bind(this,position));
+
+      todosUl.appendChild(todoLi);
+    },this);      
+    
+  }
+
+  addTodos(e){
+    const todoId = `${this.state.header}input`;
+    let newItem = document.getElementById(todoId).value;
+
+    if(newItem === ''){
+      alert('Please add a student name')
       return;
     }
-    const todo = this.entries[position];
-    todo.completed = !todo.completed;
+
+    this.state.todos.push({text: newItem, completed:false});
+    this.displayTodos();
+
+    newItem = ''; 
+
   }
 
-  // view methods
-  createDeleteButton() {
-    var deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.className = 'deleteButton';
-    return deleteButton;
-  }
+  toggle(position){
+    if(!this.state.todos[position].completed){
+     this.state.todos[position].completed = true ;
+     this.displayTodos();
+    }else{
+     this.state.todos[position].completed = false ;
+     this.displayTodos();
+    }
+  
+   }
 
-  render() {
-    const todosUl = document.createElement('ul');
-
-    for (let position = 0; position < this.entries.length; position++) {
-      // ...
+   toggleAll() {
+   
+    const listObj = this.state.todos;
+    for (let i = 0; i < listObj.length; i++ ) {
+      if(listObj[i].completed === true){
+        listObj[i].completed = false;
+      }else {
+        listObj[i].completed = true;
+      }
     }
 
-    return todosUl;
+    this.displayTodos();
   }
+  
+  deleteTodos(position) {    
+
+    this.state.todos.splice(position, 1);
+
+    this.displayTodos();
+
+   
+  }
+
+
 }
