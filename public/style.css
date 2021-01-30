@@ -1,0 +1,15 @@
+
+#user-interface{
+    text-align: center
+    }
+    #list-name-input{
+        background-color: rgb(151, 245, 175);
+        border: none;
+    }
+
+    .lists{
+        display: flex;
+        justify-content: space-between;        
+        align-items: center;
+        flex-wrap: wrap;
+    }
