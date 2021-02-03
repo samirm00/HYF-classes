@@ -27,7 +27,7 @@ A simple website allows the user to create and delete classes and add and delete
 
 
 ## Setup
-open the website and create as many `todo list as you want`
+open the website and create as many `classes as you want`
 
 ## Code Examples
 
